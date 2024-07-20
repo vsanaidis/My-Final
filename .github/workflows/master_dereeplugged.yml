@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python app to Azure Web App - dereeplugged
+name: Build and deploy Python app to Azure Web App - Dereeplugged
 
 on:
   push:
@@ -65,14 +65,14 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_5B5018ABE3E64D7DAD9C895C4829DA56 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_850F475C3DAC43EEB21A6355A82725EF }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_2851AAFEE9E7469498F16E0563F73028 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C368A5A170214306B2E18252E8719CDC }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_B3245A472A324DC8A4B8621B9A4E4161 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_4E9BABDD3F52487F9B065EA6FCA86481 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'dereeplugged'
+          app-name: 'Dereeplugged'
           slot-name: 'Production'
           
