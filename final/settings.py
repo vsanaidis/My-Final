@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-cx%7ijeaf$adbfbdh4ye^pkj(yhw_b*1$5+z+$=o#lx3hehi@m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['www.Dereeplugged.azurewebsites.net']
+ALLOWED_HOSTS = ['dereeplugged.azurewebsites.net']
 
 
 # Application definition
@@ -76,7 +76,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'final.wsgi.application'
-DEBUG = False
+
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
