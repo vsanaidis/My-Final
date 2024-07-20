@@ -1,0 +1,58 @@
+{% extends "index.html" %}
+{% load static %}
+{% block css %}<link rel="stylesheet" href="{%static 'css/notes.css' %}">{% endblock %} 
+{% block js %}<script defer src="{% static 'scripts/notes.js' %}"></script>{% endblock %}
+
+{% block body %}
+    
+{% block searchbar %}
+<div class="container-fluid" id="search_form">
+
+    <div class="input-group rounded" id="searchbar_notes">
+        <form action="{% url 'search_bar' %}" method="get">
+            {% csrf_token %}
+            <input type="search" name="q" class="form-control rounded" placeholder="Search"/>
+            <select name="level" class="form-select">
+                <option value="">All Levels</option>
+                <option value="L4">L4</option>
+                <option value="L5">L5</option>
+                <!-- Add more levels as needed -->
+            </select>
+            <button type="submit" id="search_button2">
+                <span class="input-group-text border-0" id="search-addon">
+                    <i class="bi bi-search" id="search_button"></i>
+                </span>
+            </button>
+        </form>
+    </div>
+
+</div>
+
+{% endblock %}
+<div class="container-fluid">
+    <div class="row" id="cardss">
+        {% for note in notes %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+                {% if note.image %}
+                <img class="card-img-top" src="{{ note.image.url }}" alt="{{ note.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h4 class="card-title">{{ note.title }}</h4>
+                    <p class="card-text">{{ note.description }}</p>
+                </div>
+                <div class="card-footer" id="card-footer">
+                    <ul>
+                        <li><a href="{% url 'course_posts' note.id %}" class="btn">Notes</a></li>
+                        <li><a href="{% url 'notes_details' note.title %}" class="btn ">Details</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+
+  

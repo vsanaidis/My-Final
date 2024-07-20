@@ -1,0 +1,22 @@
+{% extends "index.html" %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/cart.css'%}">
+{% endblock %}
+{% block body %}
+<h1 class="h1_cart">Review and Confirm Your Order</h1>
+<div class="cart_container">
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <h2>Cart Summary</h2>
+        <ul>
+            {% for item in cart_items %}
+                <li>{{ item.product.name }} - {{ item.quantity }} x ${{ item.product.price }}</li>
+            {% endfor %}
+        </ul>
+        <p>Total Price: ${{ total_price }}</p>
+        <button type="submit" id="bottom_buttons" class="badge rounded-pill">Confirm Order</button>
+    </form>
+</div>
+{% endblock %}

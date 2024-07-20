@@ -1,0 +1,25 @@
+{% extends "index.html" %}
+{% load static %}
+{% block js %}<script defer src="{% static 'scripts/notes.js' %}"></script>{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/cart.css'%}">
+{% endblock %}
+{% block body %}
+<h1 class="h1_cart">Order Confirmed</h1>
+<div class="cart_container">
+
+
+     
+    <p>Thank you for your purchase! Here are the details of your order:</p>
+    <h2>Order Details</h2>
+    <ul>
+        {% for item in order.items.all %}
+            <li>{{ item.product.name }} - {{ item.quantity }} x ${{ item.product.price }}</li>
+        {% endfor %}
+    </ul>
+
+    <p>Total Price: ${{ order.total_price }}</p>
+    <p>Address: {{ order.address }}</p>
+    <p>Payment Method: {{ order.payment_method }}</p>
+</div>
+{% endblock %}

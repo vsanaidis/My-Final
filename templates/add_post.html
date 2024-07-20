@@ -1,0 +1,22 @@
+{% extends "index.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/account_log_in.css' %}">
+{% endblock %}
+{% block js %}
+<script defer src="{% static 'scripts/notes.js' %}"></script>
+{% endblock %}
+{% block body %}
+<div class="container">
+    <h2>Add a New Post to {{ course.title }}</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ post_form.as_p }}
+        {{ image_formset.management_form }}
+        {% for form in image_formset %}
+            {{ form.as_p }}
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}

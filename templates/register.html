@@ -1,0 +1,63 @@
+{% extends "index.html" %}
+{% load static %}
+{% block js %}<script defer src="{% static 'scripts/notes.js' %}"></script>{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/register.css'%}">{% endblock %}
+
+{%block body %}
+<div class="register container-fluid">
+    <h1>Register:</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        <div class="register_input">
+            {{ form.username.label_tag}} {{ form.username }}
+            {% if form.username.errors %}
+                <div class="alert alert-danger">{{ form.username.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="register_input">
+            {{ form.email.label_tag }} {{ form.email }}
+            {% if form.email.errors %}
+                <div class="alert alert-danger">{{ form.email.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="register_input">
+            {{ form.password1.label_tag }} {{ form.password1 }}
+            {% if form.password1.errors %}
+                <div class="alert alert-danger">{{ form.password1.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="register_input">
+            {{ form.password2.label_tag }} {{ form.password2 }}
+            {% if form.password2.errors %}
+                <div class="alert alert-danger">{{ form.password2.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="register_input">
+            {{ form.first_name.label_tag }} {{ form.first_name }}
+            {% if form.first_name.errors %}
+                <div class="alert alert-danger">{{ form.first_name.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="register_input">
+            {{ form.last_name.label_tag }} {{ form.last_name }}
+            {% if form.last_name.errors %}
+                <div class="alert alert-danger">{{ form.last_name.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="register_input">
+            {{ form.phone_number.label_tag }} {{ form.phone_number }}
+            {% if form.phone_number.errors %}
+                <div class="alert alert-danger">{{ form.phone_number.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="register_checkbox">
+            {{ form.terms_checkbox }} <label for="id_terms_checkbox">Accept Terms</label>
+            {% if form.terms_checkbox.errors %}
+                <div class="alert alert-danger">{{ form.terms_checkbox.errors }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-block mb-4" id="register_button">Register</button>
+    </form>
+</div>
+
+{% endblock %}

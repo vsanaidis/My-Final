@@ -1,0 +1,103 @@
+{% extends "index.html" %}
+{% load static %}
+{% block js %}<script defer src="{% static 'scripts/notes.js' %}"></script>{% endblock %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/subscriptions.css'%}">{% endblock %}
+
+{% block navigation_bar %}
+
+    <nav>
+        <a href="{% url 'home' %}"><h1 class="logo"><img src="{% static 'Resources/logo.png' %}"></img></h1></a>
+        <div class="container-fluid cnt">
+            <ul>
+                <a href="{% url 'home' %}"> 
+                    <li>Home</li>
+                </a>
+                
+                <a href="{% url 'notes' %}">
+                    <li>Courses</li>
+                </a>
+
+                <a href="{% url 'opinions' %}">
+                    <li>Opinions</li>
+                </a>
+
+                <a href="{% url 'cart:product_list' %}">
+                    <li>Subscriptions</li>
+                </a>
+                
+                <a href="{% url 'account' %}">
+                    <li><span class="material-symbols-outlined" id="account_icon2">
+                        account_circle
+                        </span></li>
+                    
+                </a>
+                <a href="{% url 'cart:view_cart' %}">
+                    <li><i class="bi bi-cart-fill"></i></li>
+                    
+                </a>
+                
+            </ul>
+        </div>
+        <a href="#" class="sidebar">
+            <span class="material-symbols-outlined">
+            menu
+            </span>
+        </a>
+        <a href="#" class="sidebar_close">
+            <span class="material-symbols-outlined">
+                close
+                </span>
+        </a>
+
+        
+    </nav>
+
+    <div id="page_container">
+        <div id="content_wrap">
+        <div class="dropdown_container container-fluid">
+        <div class="dropdown_menu">
+  
+            <ul>
+                <a href="{% url 'account' %}" id="account_icon">
+                    <li><span class="material-symbols-outlined">
+                        account_circle
+                        </span></li>
+                </a>
+                <a href="{% url 'home' %}"><li>Home</li></a>
+                <a href="{% url 'notes' %}"><li>Courses</li></a>
+                <a href="{% url 'opinions' %}"><li>Opinions</li></a>
+                <a href="{% url 'cart:view_cart' %}"><li>Subscriptions</li></a>
+                <a href="#"><li><i class="bi bi-cart-fill"></i></li></a>
+
+            </ul>
+
+        </div>
+            </div>
+
+        {% endblock %}
+
+{%block body %}
+
+<h1 id="h1">Subscription Catalog</h1>
+<div class="container my-4" id="product-list">
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-4 mb-4" id="cardss">
+            <div class="card h-100">
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" width="200" height="150">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">{{ product.description }}</p>
+                    <p class="card-text">Price: ${{ product.price }}</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'cart:add_to_cart' product.id %}" class="btn">Add to Cart</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}

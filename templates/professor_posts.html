@@ -1,0 +1,32 @@
+{% extends "index.html" %}
+{% load static %}
+{% block js %}<script defer src="{% static 'scripts/notes.js' %}"></script>{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/cart.css'%}">
+{% endblock %}
+
+{% block body %}
+<h1 class="h1_cart">Posts about {{ professor.name }}</h1>
+<div class="cart_container mb-3">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button id="bottom_buttons" class="badge rounded-pill" type="submit">Add Post</button>
+    </form>
+    <div class="posts" >
+        {% for post in posts %}
+        <div class="post bg-success mt-5 p-5" >
+            <p class="text-dark fs-5 ">@anonymous said:</p>
+            <p class="fs-4">- {{ post.content }}</p>
+            <small class="bg-secondary text-dark fs-6">Posted at: {{ post.created_at }}</small>
+            {% if post.user == request.user %}
+                <form method="post" action="{% url 'delete_post' post.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm mt-2">Delete</button>
+                </form>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

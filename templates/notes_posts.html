@@ -1,0 +1,79 @@
+{% extends "index.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/notes_posts.css' %}">
+{% endblock %}
+{% block js %}
+<script defer src="{% static 'scripts/notes.js' %}"></script>
+{% endblock %}
+{% block body %}
+<h1 id="h1_posts">Posts for {{ course.title }}</h1>
+<a href="{% url 'add_post' course.id %}" class="btn btn-primary" id="add_post_button">Add a Post</a>
+<div class="container-fluid cnt4">
+    
+
+    <div class="posts-list">
+        {% for post in posts %}
+        <div class="post card" id="card-post">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.user }}</h5>
+                <p class="card-text">{{ post.description }}</p>
+
+                <!-- Carousel for Images -->
+                {% if post.images.all %}
+                <div id="carousel-{{ post.id }}" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        {% for image in post.images.all %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <img src="{{ image.image.url }}" class="d-block w-100" alt="...">
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <a class="carousel-control-prev" href="#carousel-{{ post.id }}" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carousel-{{ post.id }}" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+                {% endif %}
+
+                <!-- Like/Unlike Button -->
+                <form action="{% url 'like_post' post.id %}" method="post">
+                    {% csrf_token %}
+                    {% if user in post.likes.all %}
+                    <button type="submit">Unlike</button>
+                    {% else %}
+                    <button type="submit" id="heartbeat_button"><i class="bi bi-activity"></i></button>
+                    {% endif %}
+                </form>
+
+                <!-- Display likes count -->
+                <p>{{ post.likes.count }} Hearbeats</p>
+
+                <!-- Comments Section -->
+                <div class="comments">
+                    <h4>Comments:</h4>
+                    {% for comment in post.comments.all %}
+                    <div class="comment">
+                        <p><strong>{{ comment.user.username }}:</strong> {{ comment.text }}</p>
+                    </div>
+                    {% empty %}
+                    <p>No comments yet.</p>
+                    {% endfor %}
+                </div>
+
+                <!-- Add a Comment Form -->
+                <form action="{% url 'add_comment' post.id %}" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Add Comment</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

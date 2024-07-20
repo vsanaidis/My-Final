@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+{% load static %}
+{% block js %}<script defer src="{% static 'scripts/notes.js' %}"></script>{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/opinions.css'%}">
+{% endblock %}
+{% block body %}
+<div class="prof_cont">
+    <h1>Professors</h1>
+    <form method="get" action="{% url 'opinions' %}" class="add_button">
+        <input type="text" name="q" placeholder="Search professors" value="{{ query|default_if_none:'' }}">
+        <button type="submit" class="badge rounded-pill">Search</button>
+    </form>
+
+    <form method="post" class="add_button">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="badge rounded-pill">Add Professor</button>
+    </form>
+</div>
+<div class="professor-cards">
+    {% for professor in professors %}
+    <div class="card">
+        <h2>{{ professor.name }}</h2>
+        <p>Created at: {{ professor.created_at }}</p>
+        <a href="{% url 'professor_posts' professor.id %}" class="btn">View Posts</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

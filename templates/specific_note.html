@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+{% load static %}
+{% block js %}
+    <script defer src="{% static 'scripts/notes.js' %}"></script>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/notes.css' %}">
+{% endblock %}
+ 
+
+{% block body %}
+<div class="container-fluid cnt3">
+    <h1 id="sn_h1">{{ note.title }}</h1>
+    <p id="sn_p">{{ note.description }}</p>
+    <div class="course-info">
+        <p><div class="course-f">Course Field: </div> <div class="text-info d-inline-block">{{ note.course_field }}</div></p>
+        <p><div class="course-f">Prerequisites: </div> <div class="text-info d-inline-block">{{ note.prerequisites }}</div></p>
+        <p><div class="course-f">Corequisites: </div> <div class="text-info d-inline-block">{{note.corequisites }}</div></p>
+        <p><div class="course-f">Level: </div> <div class="text-info d-inline-block">{{note.level }}</div></p>
+        <p><a href="{{ note.file.url }}" target="_blank">Find {{note.title}}'s Syllabus here</a></p>
+    </div>
+</div>
+{% endblock %}
+
+  

@@ -1,0 +1,20 @@
+{% extends "index.html" %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
+{% block js %}
+<script defer src="{% static 'scripts/notes.js' %}"></script>
+{% endblock %}
+{% block body %}
+<div class="container">
+    <h1 class="h1_cart">Add a Comment to this Post</h1>
+    <div class="cart_container">
+        <form method="post" action="{% url 'add_comment' post.id %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button id="bottom_buttons" type="submit" class="btn btn-primary badge rounded-pill">Submit Comment</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

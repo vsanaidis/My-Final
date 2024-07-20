@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/cart.css'%}">
+{% endblock %}
+
+{% block head %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% endblock %}
+
+{% block body %}
+<h1 class="h1_cart">{{ request.user.first_name }} {{ request.user.last_name }}'s shopping cart:</h1>
+<div class="cart_container">
+    <div class="product-list">
+        {% for item in cart_items %}
+        <div class="product-item" id="product_item">
+            <p>{{ item.product.name }} ({{ item.quantity }})</p>
+            <p>Price: ${{ item.product.price }}</p>
+            <a href="{% url 'cart:remove_from_cart' item.id %}" class="badge rounded-pill">Remove</a>
+        </div>
+        {% empty %}
+        <p>Your cart is empty.</p>
+        {% endfor %}
+    </div>
+
+    <p>Total Price: ${{ total_price }}</p>
+    <a href="{% url 'cart:buy' %}" id="bottom_buttons" class="badge rounded-pill">Buy Now!</a>
+    <a href="{% url 'cart:product_list' %}" id="bottom_buttons" class="badge rounded-pill">Continue Shopping</a>
+</div>
+{% endblock %}
