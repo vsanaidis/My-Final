@@ -1,86 +1,34 @@
-name: Build and deploy Python app to Azure Web App - dereeplugged
+name: Build and deploy React app to Azure Static Web Apps
 
 on:
   push:
     branches:
-      - master
-  workflow_dispatch:
+      - main
 
 jobs:
-  build:
+  build_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up Python version
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'
 
-      - name: Create and start virtual environment
-        run: |
-          python -m venv venv
-          source venv/bin/activate
-     
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-       
-      - name: Collect static files
-        run: python manage.py collectstatic --noinput
+    - name: Install dependencies
+      run: npm install
 
-      - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+    - name: Build project
+      run: npm run build
 
-      - name: Upload artifact for deployment jobs
-        uses: actions/upload-artifact@v4
-        with:
-          name: python-app
-          path: |
-            release.zip
-            !venv/
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-    permissions:
-      id-token: write #This is required for requesting the JWT
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: python-app
-
-      - name: Unzip artifact for deployment
-        run: unzip release.zip
-     
-      - name: Create web.config
-        run: |
-          echo '<?xml version="1.0" encoding="utf-8"?>
-          <configuration>
-            <system.webServer>
-              <handlers>
-                <add name="PythonHandler" path="*" verb="*" modules="FastCgiModule" scriptProcessor="D:\Python312\python.exe|D:\Python312\Lib\site-packages\wfastcgi.py" resourceType="Unspecified" />
-              </handlers>
-            </system.webServer>
-          </configuration>' > web.config
-
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_6E9F21EBE5D64B0F955C346490E7E378 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_EBDC02A86A7B4F22BD7BEE8E41A0F326 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1C2A15CF9CCC4901913A57D4289BCF3F }}
-
-      - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v3
-        id: deploy-to-webapp
-        with:
-          app-name: 'dereeplugged'
-          slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREWEBAPP_PUBLISHPROFILE_1234567890 }}
+    - name: 'Deploy to Azure Static Web App'
+      uses: Azure/static-web-apps-deploy@v1
+      with:
+        azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+        branch: main
+        app_location: '/'
+        api_location: 'api'
+        output_location: 'build'
