@@ -1,4 +1,4 @@
-name: Build and deploy Python app to DigitalOcean Droplet
+name: Build and deploy Python app to Azure Web App - dereeplugged
 
 on:
   push:
@@ -22,9 +22,12 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
-      
+     
       - name: Install dependencies
         run: pip install -r requirements.txt
+       
+      - name: Collect static files
+        run: python manage.py collectstatic --noinput
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
@@ -33,11 +36,19 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: python-app
-          path: release.zip
+          path: |
+            release.zip
+            !venv/
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    permissions:
+      id-token: write #This is required for requesting the JWT
 
     steps:
       - name: Download artifact from build job
@@ -47,9 +58,29 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-
-      - name: Deploy to DigitalOcean Droplet
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+     
+      - name: Create web.config
         run: |
-          ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY user@your_droplet_ip 'mkdir -p ~/app && cd ~/app && tar -xvf -' < release.zip
+          echo '<?xml version="1.0" encoding="utf-8"?>
+          <configuration>
+            <system.webServer>
+              <handlers>
+                <add name="PythonHandler" path="*" verb="*" modules="FastCgiModule" scriptProcessor="D:\Python312\python.exe|D:\Python312\Lib\site-packages\wfastcgi.py" resourceType="Unspecified" />
+              </handlers>
+            </system.webServer>
+          </configuration>' > web.config
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_6E9F21EBE5D64B0F955C346490E7E378 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_EBDC02A86A7B4F22BD7BEE8E41A0F326 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1C2A15CF9CCC4901913A57D4289BCF3F }}
+
+      - name: 'Deploy to Azure Web App'
+        uses: azure/webapps-deploy@v3
+        id: deploy-to-webapp
+        with:
+          app-name: 'dereeplugged'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREWEBAPP_PUBLISHPROFILE_1234567890 }}
