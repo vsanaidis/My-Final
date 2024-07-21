@@ -126,13 +126,18 @@ USE_TZ = True
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # The URL to use when referring to static files located in STATIC_ROOT.
+# settings.py
+
+# Static files (CSS, JavaScript, images)
 STATIC_URL = '/static/'
 
-# The absolute path to the directory where collectstatic will collect static files for deployment.
+# The directory where collectstatic will collect static files for deployment
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-
-# The list of locations to check when looking for static files.
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# (Optional) Define where to find static files in your app
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
