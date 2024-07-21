@@ -145,7 +145,7 @@ LOGIN_URL = '/login/'
 # Azure Storage Settings
 AZURE_ACCOUNT_NAME = os.environ.get('AZURE_ACCOUNT_NAME')
 AZURE_ACCOUNT_KEY = os.environ.get('AZURE_ACCOUNT_KEY')
-AZURE_CONTAINER = 'staticplugged'
+AZURE_CONTAINER = 'staticplugged'  # Replace with your actual container name
 
 # Azure Custom Domain and Static URL
 AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
