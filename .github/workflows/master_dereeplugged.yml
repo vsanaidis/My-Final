@@ -5,17 +5,7 @@ on:
     branches:
       - master  # or your default branch name
   workflow_dispatch: 
-    inputs:
-      logLevel:
-        description: 'Log level'
-        required: true
-        default: 'warning'
-        type: choice
-        options:
-        - info
-        - warning
-        - debug
-
+   
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
