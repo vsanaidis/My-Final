@@ -4,10 +4,10 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-cx%7ijeaf$adbfbdh4ye^pkj(yhw_b*1$5+z+$=o#lx3hehi@m')
+SECRET_KEY = 'django-insecure-cx%7ijeaf$adbfbdh4ye^pkj(yhw_b*1$5+z+$=o#lx3hehi@m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = False
 
 ALLOWED_HOSTS = ['dereeplugged.azurewebsites.net', '127.0.0.1']
 
@@ -32,7 +32,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Make sure this is right after SecurityMiddleware
+    'whitenoise.middleware.WhiteNoiseMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -105,17 +105,34 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/login/'
 
-# Azure Storage Settings for production
-if not DEBUG:
-    DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
-    AZURE_ACCOUNT_NAME = 'dereeplugged'  # Replace with your actual storage account name
-    AZURE_ACCOUNT_KEY = os.getenv('AZURE_ACCOUNT_KEY')   # Replace with your actual storage account key
-    AZURE_CONTAINER = 'media'  # The container where you want to store media files
-    MEDIA_ROOT = os.path.join('/home/site/wwwroot', 'media')
-
-# Security settings for production
+# Azure Storage Settings
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+else:
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+
+# Azure Storage Settings for production
+# if not DEBUG:
+#     DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+#     AZURE_ACCOUNT_NAME = 'dereeplugged '  # Replace with your actual storage account name
+#     AZURE_ACCOUNT_KEY = 'DWO3ROSb1u+5thRUNry9pPzVOoP83Ed8zXZi7DSxSB1JDBhbtL6v3LZjkgP8fCjCAqCpLSrRBlPR+AStX/2uOQ=='    # Replace with your actual storage account key
+#     AZURE_CONTAINER = 'media'  # The container where you want to store media files
+#     MEDIA_ROOT = os.path.join('/home/site/wwwroot', 'media')
+
+# # Security settings for production
+# if not DEBUG:
+#     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#     SECURE_SSL_REDIRECT = True
+#     SESSION_COOKIE_SECURE = True
+#     CSRF_COOKIE_SECURE = True
