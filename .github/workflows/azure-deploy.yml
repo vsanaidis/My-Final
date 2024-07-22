@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master  # or your default branch name
+  workflow_dispatch: 
 
 jobs:
   build-and-deploy:
