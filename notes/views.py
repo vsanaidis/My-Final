@@ -7,15 +7,14 @@ from django.db.models import Q
 from django.http import HttpResponse
 
 
-@login_required 
-def notes_view(request):
+def notes_view(request): #my view that displays my notes
 
     notes = Notes.objects.all()
     context = {
         'notes': notes
     }
     return render(request, 'notes.html', context)
-    
+@login_required
 def notes_details(request, title):
     note = get_object_or_404(Notes, title=title)
     

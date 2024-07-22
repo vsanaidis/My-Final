@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from .forms import SignupForm
-
+# I create the user signup view
 def user_signup(request):
-    if request.method == 'POST':
+    if request.method == 'POST':# if the form is submitted, this is what POST means
         form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
