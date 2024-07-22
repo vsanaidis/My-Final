@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-cx%7ijeaf$adbfbdh4ye^pkj(yhw_b*1$5+z+$=o#lx3hehi@m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['dereeplugged.azurewebsites.net', '127.0.0.1']
 
@@ -108,9 +108,10 @@ LOGIN_URL = '/login/'
 # Azure Storage Settings for production
 if not DEBUG:
     DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
-    AZURE_ACCOUNT_NAME = 'dereeplugged '  # Replace with your actual storage account name
-    AZURE_ACCOUNT_KEY = 'DWO3ROSb1u+5thRUNry9pPzVOoP83Ed8zXZi7DSxSB1JDBhbtL6v3LZjkgP8fCjCAqCpLSrRBlPR+AStX/2uOQ=='    # Replace with your actual storage account key
+    AZURE_ACCOUNT_NAME = 'dereeplugged'  # Replace with your actual storage account name
+    AZURE_ACCOUNT_KEY = os.getenv('AZURE_ACCOUNT_KEY')   # Replace with your actual storage account key
     AZURE_CONTAINER = 'media'  # The container where you want to store media files
+    MEDIA_ROOT = os.path.join('/home/site/wwwroot', 'media')
 
 # Security settings for production
 if not DEBUG:
