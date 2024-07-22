@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-cx%7ijeaf$adbfbdh4ye^pkj(yhw_b*1$5+z+$=o#lx3hehi@m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['dereeplugged.azurewebsites.net', '127.0.0.1']
 
@@ -126,6 +126,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://dereeplugged.azurewebsites.net',
+]
 
 # Static files (CSS, JavaScript, images)
 
