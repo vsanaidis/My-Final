@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-cx%7ijeaf$adbfbdh4ye^pkj(yhw_b*1$5+z+$=o#lx3hehi@m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['dereeplugged.azurewebsites.net', '127.0.0.1']
 
@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'sslserver',
     'final',
     'index',
     'notes',
@@ -98,7 +99,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -123,16 +124,21 @@ else:
     CSRF_COOKIE_SECURE = False
 
 # Azure Storage Settings for production
-# if not DEBUG:
-#     DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
-#     AZURE_ACCOUNT_NAME = 'dereeplugged '  # Replace with your actual storage account name
-#     AZURE_ACCOUNT_KEY = 'DWO3ROSb1u+5thRUNry9pPzVOoP83Ed8zXZi7DSxSB1JDBhbtL6v3LZjkgP8fCjCAqCpLSrRBlPR+AStX/2uOQ=='    # Replace with your actual storage account key
-#     AZURE_CONTAINER = 'media'  # The container where you want to store media files
-#     MEDIA_ROOT = os.path.join('/home/site/wwwroot', 'media')
+if not DEBUG:
+    DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+    AZURE_ACCOUNT_NAME = 'dereeplugged '  # Replace with your actual storage account name
+    AZURE_ACCOUNT_KEY = 'DWO3ROSb1u+5thRUNry9pPzVOoP83Ed8zXZi7DSxSB1JDBhbtL6v3LZjkgP8fCjCAqCpLSrRBlPR+AStX/2uOQ=='    # Replace with your actual storage account key
+    AZURE_CONTAINER = 'media'  # The container where you want to store media files
+    MEDIA_URL = f'https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/{AZURE_CONTAINER}/'
+    MEDIA_ROOT = '' 
 
-# # Security settings for production
-# if not DEBUG:
-#     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-#     SECURE_SSL_REDIRECT = True
-#     SESSION_COOKIE_SECURE = True
-#     CSRF_COOKIE_SECURE = True
+if DEBUG:
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+if not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
