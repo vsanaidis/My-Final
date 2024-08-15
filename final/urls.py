@@ -11,6 +11,8 @@ urlpatterns = [
     path('', include('shopping_cart.urls')),
     path('posts/', include('posts.urls')),
     path('opinions/',include('opinions.urls')),
+    path('friend_requests/', include('friend_notifications.urls')),
+    
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

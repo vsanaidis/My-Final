@@ -1,0 +1,55 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/common.css' %}">
+<link rel="stylesheet" href="{% static 'css/user_profile.css' %}">{% endblock %}
+{% block js %}<script src="{% static 'scripts/friend_notifications.js' %}"></script> {% endblock %}
+{% block body %}
+<div class="friend_requests">
+    <h2>Friend Requests</h2>
+    
+    <h3>Incoming Requests:</h3>
+    {% if incoming_requests %}
+        <ul>
+            {% for request in incoming_requests %}
+                <li>
+                    <img src="{{ request.from_user.profile.photo.url }}" class="rounded-circle border border-warning" alt="Profile Photo of {{ req.from_user.username }}">
+                    <a href="{% url 'user_profile' username=request.from_user.username %}"><i>"{{ request.from_user.username }}"</i></a> has sent you a friend request.                    
+                    <form method="post" action="{% url 'friend_notifications:handle_request' request.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="accept">
+                        <button type="submit" class="btn btn-success">Accept</button>
+                    </form>
+                    <form method="post" action="{% url 'friend_notifications:handle_request' request.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="reject">
+                        <button type="submit" class="btn btn-success">Reject</button>
+                    </form>
+                    <p>Received at: {{request.created_at}}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No pending incoming friend requests.</p>
+    {% endif %}
+
+    <h3>Sent Requests:</h3>
+    {% if sent_requests %}
+        <ul>
+            {% for request in sent_requests %}
+                <li>
+                    <img src="{{ request.to_user.profile.photo.url }}" class="rounded-circle border border-warning">You sent a friend request to <a href="{% url 'user_profile' username=request.to_user.username %}">{{  request.to_user.username  }}.</a>
+                    <form method="post" action="{% url 'friend_notifications:cancel_request' request.to_user.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="cancel">
+                        <button type="submit" class="btn btn-success">Cancel</button>
+                    </form>
+                    <p>Sent at: {{request.created_at}}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No pending outgoing friend requests.</p>
+    {% endif %}
+</div>
+{% endblock %}

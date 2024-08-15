@@ -18,4 +18,11 @@ $(document).ready(function(){
         sidebar_container.css("display","none");
         sidebar.css("display", "block");
     });
+    document.querySelector('.profile-icon').addEventListener('mouseenter', function() {
+        document.querySelector('.dropdown-content').style.display = 'block';
+      });
+      
+      document.querySelector('.profile-dropdown').addEventListener('mouseleave', function() {
+        document.querySelector('.dropdown-content').style.display = 'none';
+      });
 });

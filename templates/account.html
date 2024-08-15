@@ -1,66 +1,66 @@
 {% extends 'index.html' %}
 {% load static %}
+
 {% block js %}
 <script defer src="{% static 'scripts/account.js' %}"></script>
 {% endblock %}
+
 {% block css %}
+<link rel="stylesheet" href="{% static 'css/common.css' %}">
 <link rel="stylesheet" href="{% static 'css/account.css' %}">
 {% endblock %}
 
 {% block body %}
-<div class="account">
-    {% if request.user.is_authenticated %}
-    <p>Welcome, {{ request.user.first_name }} {{ request.user.last_name }}!</p>
-    <p id="p2">Email: {{ request.user.email }}</p>
-    <p id="p2">First name: {{ request.user.first_name }}</p>
-    <p id="p2">Last name: {{ request.user.last_name }}</p>
-    <a id="logout_button" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a>
-    {% else %}
-    <h1>Welcome!</h1>
-    <ul>
-        <li><a id="a1" href="{% url 'login' %}">Login</a></li>
-        <li><a id="a2" href="{% url 'signup' %}">Signup</a></li>
-    </ul>
-    {% endif %}
-</div>
-
-{% if request.user.is_authenticated %}
-<div class="container-fluid cnt-2">
-    <ul>
-        <li id="account_btn"><a href="#" id="account_button"> Account</a></li>
-        <li><a href="#" id="settings_button"> Settings</a></li>
-    </ul>
-</div>
-<div class="account2">
-    <h1>Change Password</h1>
-    <form method="post">
-        {% csrf_token %}
+<div class="page-wrapper">
+  <div class="content-wrapper">
+    <div class="account-container">
+      <div class="main-content">
+        <div class="account">
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+          </form>
+          {% if request.user.is_authenticated %}
+            <h2>Welcome, {{ request.user.first_name }} {{ request.user.last_name }}!</h2>
+            <div class="avatar">
+              {% if user.profile.photo %}
+                <img class="border border-warning rounded-circle account-img" src="{{ user.profile.photo.url }}" alt="Profile Picture">
+              {% else %}
+                <img class="account-img" src="{% static 'media/media/logo.png' %}" alt="Default avatar" style="height:100px; width:125px;">
+              {% endif %}
+            </div>
+            <div class="user-info">
+              <p>Email: {{ request.user.email }}</p>
+              <p>First name: {{ request.user.first_name }}</p>
+              <p>Last name: {{ request.user.last_name }}</p>
+            </div>
+       
+            <form method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="form-group" id="change_container">
+                <input type="file" id="browse" name="photo" accept="image/*" id="id_photo">
+                <button type="submit" name="update_picture" class="btn badge rounded-pill btn-primary">Update Picture</button>
+              </div>
+            </form>
+         
+           
+            <a id="logout_button" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a>
+          {% else %}
+            <h1>Welcome!</h1>
+            <ul>
+              <li><a id="a1" href="{% url 'login' %}">Login</a></li>
+              <li><a id="a2" href="{% url 'signup' %}">Signup</a></li>
+            </ul>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <!-- {% if messages %}
+      <ul class="messages">
         {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">
-            {{ message }}
-        </div>
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
         {% endfor %}
-        <div class="form2">
-            <label for="id_old_password">Old Password:</label>
-            {{ form.old_password }}
-        </div>
-        <div class="form2">
-            <label for="id_old_password">New Password:</label>
-            {{ form.new_password1 }}
-        </div>
-        <div class="form2">
-            <label for="id_old_password">Confirm Password:</label>
-            {{ form.new_password2 }}
-        </div>
-        <button type="submit">Change Password</button>
-    </form>
+      </ul>
+    {% endif %} -->
+  </div>
 </div>
-{% else %}
-<h1>Welcome !</h1>
-<ul>
-    <li><a id="a1" href="{% url 'login' %}">Login</a></li>
-    <li><a id="a2" href="{% url 'signup' %}">Signup</a></li>
-</ul>
-{% endif %}
-
 {% endblock %}

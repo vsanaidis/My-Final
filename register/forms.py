@@ -14,7 +14,7 @@ class SignupForm(UserCreationForm):
     class Meta:
         # I associate the model I will use
         model = get_user_model()
-        fields = ('email', 'first_name', 'last_name', 'phone_number', 'password1', 'password2')
+        fields = ('email', 'first_name', 'last_name', 'phone_number', 'password1', 'password2','photo')
 
     def clean_email(self): 
         #I create a custom validation for the email that should end with @acg.edu

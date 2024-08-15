@@ -4,6 +4,8 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.models import User
+from .models import Profile
 
 # signup form for use registration, all input is required
 class SignupForm(UserCreationForm):
@@ -41,11 +43,45 @@ class LoginForm(forms.Form):
     )
 
 #my custom password change form which takes the built-in django form and adds more to it 
-class CustomPasswordChangeForm(PasswordChangeForm):
-    def __init__(self, *args, **kwargs):# I used the *args and *kwargs to pass arguments to the parent class and help with the handling of variable number of arguments.
-        super().__init__(*args, **kwargs)
-        self.fields['old_password'].widget.attrs.update({'class': 'form-control'}) #here I add classes to the forms for my styling in my css
-        self.fields['new_password1'].widget.attrs.update({'class': 'form-control'})
-        self.fields['new_password2'].widget.attrs.update({'class': 'form-control'})
+from django import forms
+from django.contrib.auth.forms import PasswordChangeForm
+from django.core.exceptions import ValidationError
 
+class CustomPasswordChangeForm(PasswordChangeForm):
+    old_password = forms.CharField(
+        label="Current Password",
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+    )
+    new_password1 = forms.CharField(
+        label="New Password",
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+        help_text="Your password must contain at least 8 characters, including letters and numbers."
+    )
+    new_password2 = forms.CharField(
+        label="Confirm New Password",
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+    )
+
+    def clean_new_password1(self):
+        password = self.cleaned_data.get('new_password1')
+        if len(password) < 8:
+            raise ValidationError("Password must be at least 8 characters long.")
+        if not any(char.isdigit() for char in password):
+            raise ValidationError("Password must contain at least one number.")
+        if not any(char.isalpha() for char in password):
+            raise ValidationError("Password must contain at least one letter.")
+        return password
         
+class UserUpdateForm(forms.ModelForm):
+
+    email = models.EmailField()
+
+    class Meta:
+
+        model = User  
+        fields = ['first_name','last_name','email']
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['photo']

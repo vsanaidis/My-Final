@@ -1,0 +1,40 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block js %}
+<script src="{% static 'scripts/user_profile.js' %}"></script>
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/common.css' %}">
+<link rel="stylesheet" href="{% static 'css/user_profile.css' %}">
+{% endblock %}
+{% block body %}
+<div class="profile_container">
+    <h2>{{ profile_user.username}}</h2>
+    <img src="{{profile_user.profile.photo.url}}" class="rounded-circle border border-warning" >
+    <div class="profile_info">
+        {% if user != profile_user %}
+            <form action="{% url 'friend_notifications:send_request' profile_user.id %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="user_id" value="{{ profile_user.id }}">
+            <button type="submit" id="addFriendBtn">
+            <i class="bi bi-person-add"></i>
+            <span id="friend_status">Add Friend</span>
+            </button>
+            </form>
+        {% endif %}
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <p>First Name: {{ profile_user.first_name}}</p>
+        <p>Last Name: {{ profile_user.last_name}}</p>
+        <a href="mailto:{{profile_user.email}}" class="badge rounded-pill">Email</a>
+    </div>
+</div>
+{% endblock %}

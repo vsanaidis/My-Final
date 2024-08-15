@@ -1,0 +1,40 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/common.css' %}">
+<link rel="stylesheet" href="{% static 'css/search_results.css' %}">
+{% endblock %}
+{% block body %}
+
+<div class="profile_container">
+    <div class="search">
+        <form method="GET" action="{% url 'search_friends' %}">
+            <input id="search_input" type="text" name="username" placeholder="Search for username">
+            <button type="submit"><i class="bi bi-search"></i></button>
+        </form>
+    </div>
+    <h1>Search results for: {{query}}</h1>
+    {% if users %}
+        <ul class="user-list">
+        {% for user in users %}
+            <li class="user-item">
+                <div class="user-image">
+                    {% if user.profile.photo %}
+                        <img src="{{user.profile.photo.url}}" class="rounded-circle" alt="{{ user.username }}">
+                    {% else %}
+                        <img src="{% static '../media/media/logo.png' %}" class="rounded-circle" alt="Default">
+                    {% endif %}
+                </div>
+                <div class="user-info">
+                    <h2><a href="{% url 'user_profile' username=user.username %}">{{ user.username }}</a></h2>
+                    <p>First Name: {{user.first_name}}</p>
+                    <p>Last Name: {{user.last_name}}</p>
+                </div>
+            </li>    
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are no users with username: {{query}}</p>  
+    {% endif %}
+</div>
+{% endblock %}

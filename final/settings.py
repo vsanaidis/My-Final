@@ -7,9 +7,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-cx%7ijeaf$adbfbdh4ye^pkj(yhw_b*1$5+z+$=o#lx3hehi@m'
 
 
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['dereeplugged.azurewebsites.net', '127.0.0.1']
+ALLOWED_HOSTS = ['dereeplugged.azurewebsites.net', '127.0.0.1','localhost']
 
 
 INSTALLED_APPS = [
@@ -28,6 +28,8 @@ INSTALLED_APPS = [
     'posts',
     'opinions',
     'storages',
+    'notifications',
+    'friend_notifications',
 ]
 
 MIDDLEWARE = [
@@ -89,9 +91,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+
+
 # Media files
 if DEBUG:
-    MEDIA_URL = '/media/'
+    MEDIA_URL = '/media/'  
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 else:
     DEFAULT_FILE_STORAGE = 'storages.backends.azure_storage.AzureStorage'
@@ -100,6 +104,7 @@ else:
     AZURE_CONTAINER = 'media'
     MEDIA_URL = f'https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net/{AZURE_CONTAINER}/'
     MEDIA_ROOT = ''
+
 
 # Security settings
 if not DEBUG:
@@ -111,6 +116,11 @@ else:
     SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False
+    SECURE_HSTS_SECONDS = 0
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_PRELOAD = False
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_URL = '/login/'
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'account'
+

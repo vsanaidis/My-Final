@@ -4,7 +4,7 @@ $(document).ready(function(){
     let sidebar_container = $(".sidebar_container");
     let account = $("#account_button");
     let settings = $("#settings_button");
-
+    let friends = $("#friends")
     sidebar.on("click", function(e){
         e.preventDefault();
         $(".dropdown_menu").css("display", "block");
@@ -12,6 +12,18 @@ $(document).ready(function(){
         sidebar_container.css("display","flex");
         sidebar_close.css("display", "block");
     });
+
+    friends.on("click", function(){
+        
+        $(".account3").css("display","block")
+        $(".account2").css("display","none")
+        $(".account").css("display","none")
+        friends.css("color","rgb(255, 117, 31)")
+        account.css("color","white")
+        settings.css("color","white")
+        
+
+    })
 
     sidebar_close.on("click", function(e){
         e.preventDefault();
@@ -27,6 +39,7 @@ $(document).ready(function(){
         $(".account2").css("display","none")
         account.css("color","rgb(255, 117, 31)")
         settings.css("color","white")
+        friends.css("color","white")
 
     })
 
@@ -36,8 +49,11 @@ $(document).ready(function(){
         $(".account2").css("display","block")
         settings.css("color","rgb(255, 117, 31)")
         account.css("color","white")
+        friends.css("color","white")
+
 
 
 
     })
+
 });
