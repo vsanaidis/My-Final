@@ -846,3 +846,44 @@ footer ul li{
     color:red;
     
 }
+
+
+@media (max-width:917px){
+
+
+    .profile_container{
+
+        margin-top:20%;
+
+    }
+
+}
+
+@media (max-width:675px){
+
+
+    .profile_container{
+
+        margin-top:30%;
+
+    }
+
+}
+
+@media (max-width:455px){
+
+
+    .profile_container{
+
+        margin-top:40%;
+
+    }
+
+    .profile_container img{
+
+        max-width:200px;
+        max-height:150px;
+
+    }
+
+}

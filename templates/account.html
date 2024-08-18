@@ -23,9 +23,9 @@
             <h2>Welcome, {{ request.user.first_name }} {{ request.user.last_name }}!</h2>
             <div class="avatar">
               {% if user.profile.photo %}
-                <img class="border border-warning rounded-circle account-img" src="{{ user.profile.photo.url }}" alt="Profile Picture">
+                <img class="border border-warning rounded-circle account-img img-fluid" src="{{ user.profile.photo.url }}" alt="Profile Picture">
               {% else %}
-                <img class="account-img" src="{% static 'media/media/logo.png' %}" alt="Default avatar" style="height:100px; width:125px;">
+                <img class="img-fluid account-img" src="{% static 'media/media/logo.png' %}" alt="Default avatar" style="height:100px; width:125px;">
               {% endif %}
             </div>
             <div class="user-info">
@@ -38,12 +38,12 @@
               {% csrf_token %}
               <div class="form-group" id="change_container">
                 <input type="file" id="browse" name="photo" accept="image/*" id="id_photo">
-                <button type="submit" name="update_picture" class="btn badge rounded-pill btn-primary">Update Picture</button>
+                <button type="submit" name="update_picture" class="btn badge rounded-pill" id="update_button">Change</button>
               </div>
             </form>
          
            
-            <a id="logout_button" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a>
+            
           {% else %}
             <h1>Welcome!</h1>
             <ul>

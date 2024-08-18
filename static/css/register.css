@@ -454,8 +454,11 @@ footer ul li{
     
     display:grid;
     position:relative;
-    width:50%;
+    width:auto;
     margin:auto;
+    margin-left:5%;
+    margin-right:5%;
+    margin-bottom:10%;
     margin-top:15%;
     background-color: rgb(13, 0, 41);
     padding:50px 50px;
@@ -733,4 +736,37 @@ footer ul li{
 .dropdown_menu ul a:hover {
     background-color: rgba(255, 255, 255, 0.2);
     transform: scale(1.05);
+}
+
+@media (max-width:934px){
+
+    .register{
+
+        margin-bottom:30%;
+        margin-top:20%;
+
+    }
+
+}
+
+@media (max-width:534px){
+
+    .register{
+
+        margin-bottom:40%;
+        margin-top:30%;
+
+    }
+
+}
+
+@media (max-width:338px){
+
+    .register{
+
+        margin-bottom:50%;
+        margin-top:40%;
+
+    }
+
 }

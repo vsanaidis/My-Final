@@ -783,3 +783,25 @@ footer ul li{
     background-color: rgba(255, 255, 255, 0.2);
     transform: scale(1.05);
 }
+
+@media (max-width:513px){
+
+    .log_in{
+
+        margin-top:30%;
+
+
+    }
+
+}
+
+@media (max-width:413px){
+
+    .log_in{
+
+        margin-top:40%;
+        width:fit-content;
+
+    }
+
+}
